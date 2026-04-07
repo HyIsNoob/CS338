@@ -1,0 +1,13 @@
+.ssh
+
+checkpoints/
+
+data/
+*.csv
+*.xlsx
+*.json
+
+# Logs
+*.log
+
+.env
