@@ -11,3 +11,6 @@ data/
 *.log
 
 .env
+
+enwik8_split/
+*.txt
