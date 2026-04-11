@@ -2,10 +2,8 @@
 
 checkpoints/
 
-data/
 *.csv
 *.xlsx
-*.json
 
 # Logs
 *.log
@@ -13,4 +11,3 @@ data/
 .env
 
 enwik8_split/
-*.txt
