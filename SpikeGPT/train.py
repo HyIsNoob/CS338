@@ -94,8 +94,8 @@ if __name__ == '__main__':
                           n_layer=n_layer, n_embd=n_embd)).cuda()
     
     # # load a trained model. remember to change random seed
-    m2 = torch.load('../SpikeGPT/updated_2_model_weights151.pth',map_location=torch.device('cpu'))
-    model.load_state_dict(m2)
+#     m2 = torch.load('../SpikeGPT/updated_2_model_weights151.pth',map_location=torch.device('cpu'))
+#     model.load_state_dict(m2)
     
     valid_dataset = None
     test_dataset = None
