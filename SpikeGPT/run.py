@@ -38,13 +38,13 @@ os.environ["RWKV_JIT_ON"] = '1' # '1' or '0'. very useful for GPU/CPU fp32, but 
 #For 216M OpenWebText Pre-trained model
 TOKEN_MODE = "pile"
 WORD_NAME = [
-    "20B_tokenizer.json",
-    "20B_tokenizer.json",
+    "SpikeGPT/20B_tokenizer.json",
+    "SpikeGPT/20B_tokenizer.json",
 ]  # [vocab, vocab] for Pile model
 UNKNOWN_CHAR = None
 vocab_size = 50277
 
-MODEL_NAME = '../SpikeGPT/updated_2_model_weights76'
+MODEL_NAME = 'SpikeGPT/updated_2_model_weights31'
 n_layer = 18
 n_embd = 768
 ctx_len = 1024
