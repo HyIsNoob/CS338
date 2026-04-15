@@ -1,20 +1,5 @@
 [
     {
-        "id": "sample_001",
-        "description": "Kiểm tra tồn kho đơn giản",
-        "tool_used": ["check_inventory"],
-        "messages": [
-            {"role": "user", "content": "Kho còn bao nhiêu sản phẩm P100?"},
-            {
-                "role": "assistant",
-                "content": null,
-                "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "P100"}}]
-            },
-            {"role": "tool", "content": "{\"product_id\": \"P100\", \"stock\": 25}"},
-            {"role": "assistant", "content": "Sản phẩm P100 hiện còn 25 sản phẩm trong kho."}
-        ]
-    },
-    {
         "id": "sample_002",
         "description": "Tạo đơn hàng mới",
         "tool_used": ["create_order"],
@@ -24,9 +9,7 @@
                 "role": "assistant",
                 "content": null,
                 "tool_calls": [{"name": "create_order", "arguments": {"product_id": "P200", "quantity": 3, "address": "123 Lê Lợi, TP.HCM"}}]
-            },
-            {"role": "tool", "content": "{\"order_id\": \"ORD001\", \"status\": \"success\", \"message\": \"Đơn hàng đã được tạo thành công\"}"},
-            {"role": "assistant", "content": "Đơn hàng của bạn đã được tạo thành công! Mã đơn hàng là ORD001."}
+            }
         ]
     },
     {

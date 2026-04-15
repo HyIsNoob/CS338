@@ -76,16 +76,18 @@ context = """
 <|im_start|>system
 Bạn là trợ lý AI hỗ trợ khách hàng. Hãy trả lời rõ ràng, chính xác và hữu ích.Bạn có thể dùng các công cụ sau:
 <tools>
-{"name": "check_inventory", "description": "Kiểm tra tồn kho", "parameters": {"type": "object", "properties": {"product_id": {"type": "string", "description": "ID sản phẩm"}}, "required": ["product_id"]}}
-{"name": "get_order", "description": "Kiểm tra đơn hàng", "parameters": {"type": "object", "properties": {"order_id": {"type": "string", "description": "ID đơn hàng"}}, "required": ["order_id"]}}
-{"name": "create_order", "description": "Tạo đơn hàng mới", "parameters": {"type": "object", "properties": {"product_id": {"type": "string", "description": "ID sản phẩm"}, "quantity": {"type": "integer", "description": "Số lượng"}, "address": {"type": "string", "description": "Địa chỉ giao hàng"}}, "required": ["product_id", "quantity", "address"]}}
-</tools>
+{"name": "check_inventory", "description": "Kiểm tra tồn kho", "parameters": {"properties": {"product_id": "ID sản phẩm"}}}
+{"name": "revenue_analysis", "description": "Thống kê doanh thu", "parameters": {"properties": {"start_date": "Ngày bắt đầu (YYYY-MM-DD)", "end_date": "Ngày kết thúc (YYYY-MM-DD)"}}}
+{"name": "get_order", "description": "Kiểm tra đơn hàng", "parameters": {"properties": {"order_id": "ID đơn hàng"}}}
+{"name": "create_order", "description": "Tạo đơn hàng mới", "parameters": {"type": "object", "properties": {"product_id": "ID sản phẩm", "quantity": "Số lượng", "address": "Địa chỉ giao hàng"}}}
+{"name": "update_order", "description": "Cập nhật đơn hàng", "parameters": {"properties": {"order_id": "ID đơn hàng", "quantity": "Số lượng mới", "address": "Địa chỉ mới"}}}
+{"name": "delete_order", "description": "Hủy đơn hàng", "parameters": {"properties": {"order_id": "ID đơn hàng"}}}</tools>
 Khi cần gọi công cụ, trả về:
 <tool_call>
 {"name": <tên-hàm>, "arguments": <tham-số>}
 </tool_call><|im_end|>
 <|im_start|>user
-Tôi muốn mua 50 cái ghế văn phòng mã GV-02<|im_end|>
+Kho còn bao nhiêu sản phẩm có ID là P100?<|im_end|>
 <|im_start|>assistant
 """.strip()
 # context = "\n深圳是" # test Chinese
@@ -126,7 +128,7 @@ Tôi muốn mua 50 cái ghế văn phòng mã GV-02<|im_end|>
 NUM_TRIALS = 1
 LENGTH_PER_TRIAL = 333
 
-TEMPERATURE = 0.5
+TEMPERATURE = 0.2
 top_p = 0.7
 top_p_newline = 0.9  # only used in TOKEN_MODE = char
 
