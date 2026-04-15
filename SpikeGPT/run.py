@@ -44,7 +44,7 @@ WORD_NAME = [
 UNKNOWN_CHAR = None
 vocab_size = 50277
 
-MODEL_NAME = '../SpikeGPT/updated_2_model_weights76'
+MODEL_NAME = '../SpikeGPT/updated_2_model_weights16'
 n_layer = 18
 n_embd = 768
 ctx_len = 1024
