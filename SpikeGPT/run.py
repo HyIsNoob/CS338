@@ -74,21 +74,13 @@ os.environ["RWKV_RUN_DEVICE"] = args.RUN_DEVICE
 # context = "In a shocking finding, scientist discovered a herd of dragons living in a remote, previously unexplored valley, in Tibet. Even more surprising to the researchers was the fact that the dragons spoke perfect Chinese."
 context = """
 <|im_start|>system
-Bạn là trợ lý AI hỗ trợ khách hàng. Hãy trả lời rõ ràng, chính xác và hữu ích.Bạn có thể dùng các công cụ sau:
-<tools>
-{"name": "check_inventory", "description": "Kiểm tra tồn kho", "parameters": {"properties": {"product_id": "ID sản phẩm"}}}
-{"name": "revenue_analysis", "description": "Thống kê doanh thu", "parameters": {"properties": {"start_date": "Ngày bắt đầu (YYYY-MM-DD)", "end_date": "Ngày kết thúc (YYYY-MM-DD)"}}}
-{"name": "get_order", "description": "Kiểm tra đơn hàng", "parameters": {"properties": {"order_id": "ID đơn hàng"}}}
-{"name": "create_order", "description": "Tạo đơn hàng mới", "parameters": {"type": "object", "properties": {"product_id": "ID sản phẩm", "quantity": "Số lượng", "address": "Địa chỉ giao hàng"}}}
-{"name": "update_order", "description": "Cập nhật đơn hàng", "parameters": {"properties": {"order_id": "ID đơn hàng", "quantity": "Số lượng mới", "address": "Địa chỉ mới"}}}
-{"name": "delete_order", "description": "Hủy đơn hàng", "parameters": {"properties": {"order_id": "ID đơn hàng"}}}</tools>
-Khi cần gọi công cụ, trả về:
-<tool_call>
-{"name": <tên-hàm>, "arguments": <tham-số>}
-</tool_call><|im_end|>
+Bạn là trợ lý AI hỗ trợ khách hàng. Hãy trả lời rõ ràng, chính xác và hữu ích.<|im_end|>
 <|im_start|>user
-Kho còn bao nhiêu sản phẩm có ID là P100?<|im_end|>
+Bạn kiểm tra giúp tôi xem mã sản phẩm SP-8845 trong kho còn hàng không nhé.<|im_end|>
 <|im_start|>assistant
+<tool_call>
+{\"name\": \"check_inventory\", \"arguments\": {\"product_id\": \"SP-8845\"}}
+</tool_call><|im_end|>
 """.strip()
 # context = "\n深圳是" # test Chinese
 # context = "\n東京は" # test Japanese
