@@ -15947,6 +15947,1275 @@
           {"role": "user", "content": "Hủy 112233."},
           {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "112233"}}]}
         ]
-    }
+    },
+    {
+    "id": "2001",
+    "description": "Kiểm tra tồn kho sản phẩm cụ thể",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Shop ơi, đôi giày Bitis Hunter size 42 còn hàng không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "BITIS-H42"}}]}
+    ]
+  },
+  {
+    "id": "2002",
+    "description": "Thống kê doanh thu nửa đầu tháng",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Tính doanh thu từ ngày 01/04/2026 đến 15/04/2026 giúp mình."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-01", "end_date": "2026-04-15"}}]}
+    ]
+  },
+  {
+    "id": "2003",
+    "description": "Tra cứu đơn hàng qua ID",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Kiểm tra hộ mình đơn hàng có mã là 778899 nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "778899"}}]}
+    ]
+  },
+  {
+    "id": "2004",
+    "description": "Tạo đơn hàng mới",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt cho tôi 3 thùng mì Hảo Hảo về số 12 đường Trần Phú, Đà Lạt."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "MI-HAO-HAO", "quantity": 3, "address": "12 đường Trần Phú, Đà Lạt"}}]}
+    ]
+  },
+  {
+    "id": "2005",
+    "description": "Cập nhật số lượng đơn hàng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Sửa lại đơn 5544, mình muốn lấy 10 cái thay vì 5 cái như cũ."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "5544", "quantity": 10}}]}
+    ]
+  },
+  {
+    "id": "2006",
+    "description": "Hủy đơn hàng",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy đơn hàng ORD-123 giúp mình, mình muốn đổi mẫu khác."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "ORD-123"}}]}
+    ]
+  },
+  {
+    "id": "2007",
+    "description": "Kiểm tra kho hàng gia dụng",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Nồi cơm điện mã NC-SHARP còn hàng trong kho không admin?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "NC-SHARP"}}]}
+    ]
+  },
+  {
+    "id": "2008",
+    "description": "Doanh thu cả năm ngoái",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Tổng kết doanh thu từ 01/01/2025 đến hết 31/12/2025."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2025-01-01", "end_date": "2025-12-31"}}]}
+    ]
+  },
+  {
+    "id": "2009",
+    "description": "Tạo đơn hàng văn phòng phẩm",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy cho mình 50 cây bút bi Thiên Long gửi đến Văn phòng 2, tòa nhà Landmark 81."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "BUT-TL-01", "quantity": 50, "address": "Văn phòng 2, tòa nhà Landmark 81"}}]}
+    ]
+  },
+  {
+    "id": "2010",
+    "description": "Thay đổi địa chỉ nhận hàng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 9911 đổi địa chỉ sang 456 CMT8, Phường 11, Quận 3 nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "9911", "address": "456 CMT8, Phường 11, Quận 3"}}]}
+    ]
+  },
+  {
+    "id": "2011",
+    "description": "Kiểm tra tồn kho mỹ phẩm",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Kem chống nắng Anessa còn không shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "KCN-ANESSA"}}]}
+    ]
+  },
+  {
+    "id": "2012",
+    "description": "Doanh thu tuần vừa qua",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Xem cho mình doanh thu từ 07/04/2026 đến 14/04/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-07", "end_date": "2026-04-14"}}]}
+    ]
+  },
+  {
+    "id": "2013",
+    "description": "Kiểm tra tình trạng vận chuyển",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng của mình số 667702 đang ở đâu rồi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "667702"}}]}
+    ]
+  },
+  {
+    "id": "2014",
+    "description": "Đặt hàng đồ công nghệ",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mình đặt 1 chiếc iPhone 15 Pro Max 256GB giao về nhà số 5, ngõ 20 Cầu Giấy, Hà Nội."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "IP15-PM-256", "quantity": 1, "address": "số 5, ngõ 20 Cầu Giấy, Hà Nội"}}]}
+    ]
+  },
+  {
+    "id": "2015",
+    "description": "Cập nhật cả số lượng và địa chỉ",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Chỉnh lại đơn 334455: lấy 2 cái thôi và giao đến 22 Lý Tự Trọng, Cần Thơ."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "334455", "quantity": 2, "address": "22 Lý Tự Trọng, Cần Thơ"}}]}
+    ]
+  },
+  {
+    "id": "2016",
+    "description": "Hủy đơn hàng vĩnh viễn",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Xóa đơn hàng ID-8888 giúp mình nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "8888"}}]}
+    ]
+  },
+  {
+    "id": "2017",
+    "description": "Kiểm tra tồn kho linh kiện",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Ram DDR4 16GB còn hàng không em?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "RAM-DDR4-16G"}}]}
+    ]
+  },
+  {
+    "id": "2018",
+    "description": "Thống kê doanh thu quý hiện tại",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Báo cáo doanh thu từ đầu tháng 1 đến hết tháng 3 năm nay."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-01-01", "end_date": "2026-03-31"}}]}
+    ]
+  },
+  {
+    "id": "2019",
+    "description": "Tạo đơn hàng thời trang",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua cho em 2 cái áo thun trắng size L gửi về chung cư Eco Green, Quận 7."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "AT-WHITE-L", "quantity": 2, "address": "chung cư Eco Green, Quận 7"}}]}
+    ]
+  },
+  {
+    "id": "2020",
+    "description": "Kiểm tra đơn hàng đã thanh toán",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Check dùm trạng thái thanh toán đơn 101020."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "101020"}}]}
+    ]
+  },
+  {
+    "id": "2021",
+    "description": "Hỏi hàng tồn kho bằng tên sản phẩm",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Bên mình còn mẫu loa Marshall Emberton II màu đen không shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "MARSHALL-EMB-2-BLK"}}]}
+    ]
+  },
+  {
+    "id": "2022",
+    "description": "Doanh thu tính từ một sự kiện đặc biệt (Tết)",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Tổng kết doanh thu đợt khuyến mãi từ 20/01/2026 đến hết 10/02/2026 cho anh."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-01-20", "end_date": "2026-02-10"}}]}
+    ]
+  },
+  {
+    "id": "2023",
+    "description": "Tạo đơn hàng với từ ngữ địa phương",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Ship dùm tui 5 thùng bia Larue vô số 12 đường Phan Chu Trinh, Đà Nẵng nghe."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "BIA-LARUE", "quantity": 5, "address": "12 đường Phan Chu Trinh, Đà Nẵng"}}]}
+    ]
+  },
+  {
+    "id": "2024",
+    "description": "Cập nhật địa chỉ nhận hàng vì ghi nhầm",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Chết rồi, đơn 8899 mình ghi lộn số nhà, sửa lại thành số 15 thay vì số 51 đường CMT8 nha."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "8899", "address": "15 đường CMT8"}}]}
+    ]
+  },
+  {
+    "id": "2025",
+    "description": "Hủy đơn hàng vì tìm thấy chỗ rẻ hơn",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy hộ mình cái đơn ORD-991 nhé, mình tìm được chỗ khác giao nhanh hơn rồi."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "ORD-991"}}]}
+    ]
+  },
+  {
+    "id": "2026",
+    "description": "Kiểm tra tồn kho linh kiện PC",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Card đồ họa RTX 4060 Ti còn hàng sẵn ở showroom không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "VGA-RTX4060TI"}}]}
+    ]
+  },
+  {
+    "id": "2027",
+    "description": "Thống kê doanh thu theo quý",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Báo cáo tài chính thu nhập từ 01/01/2026 đến 31/03/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-01-01", "end_date": "2026-03-31"}}]}
+    ]
+  },
+  {
+    "id": "2028",
+    "description": "Kiểm tra mã vận đơn",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng #BILL-1122 của mình đã đóng gói xong chưa?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "BILL-1122"}}]}
+    ]
+  },
+  {
+    "id": "2029",
+    "description": "Tạo đơn hàng số lượng lớn",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy cho công ty 100 xấp giấy A4 Double A giao qua 200 Nguyễn Lương Bằng, Quận 7."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "GIAY-A4-DA", "quantity": 100, "address": "200 Nguyễn Lương Bằng, Quận 7"}}]}
+    ]
+  },
+  {
+    "id": "2030",
+    "description": "Thay đổi số lượng vì muốn mua thêm",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 7766 cho tớ lấy thêm 2 cái nữa nhé, tổng cộng là 5 cái."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "7766", "quantity": 5}}]}
+    ]
+  },
+  {
+    "id": "2031",
+    "description": "Kiểm tra kho mỹ phẩm",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Serum B5 của La Roche-Posay còn hàng không ạ?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "LRP-B5-SERUM"}}]}
+    ]
+  },
+  {
+    "id": "2032",
+    "description": "Doanh thu nửa năm",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Cho xem doanh số từ đầu năm 01/01/2025 đến hết 30/06/2025."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2025-01-01", "end_date": "2025-06-30"}}]}
+    ]
+  },
+  {
+    "id": "2033",
+    "description": "Hủy đơn vì không liên lạc được khách",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy đơn 5544 giúp chị, khách báo không nhận hàng nữa."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "5544"}}]}
+    ]
+  },
+  {
+    "id": "2034",
+    "description": "Tạo đơn hàng thực phẩm",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Cho 2 kg thịt bò Úc giao qua chung cư Vinhomes Central Park, tòa Landmark 4."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "BO-UC-KG", "quantity": 2, "address": "chung cư Vinhomes Central Park, tòa Landmark 4"}}]}
+    ]
+  },
+  {
+    "id": "2035",
+    "description": "Check trạng thái đơn hàng cũ",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Mã đơn 101099 giao từ tuần trước giờ tới đâu rồi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "101099"}}]}
+    ]
+  },
+  {
+    "id": "2036",
+    "description": "Kiểm tra tồn kho đồ gia dụng",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Máy hút bụi cầm tay Dyson V15 còn hàng không shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "DYSON-V15"}}]}
+    ]
+  },
+  {
+    "id": "2037",
+    "description": "Cập nhật đơn hàng: Đổi sản phẩm",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 1234 mình muốn đổi sang lấy 3 cái (lúc đầu là 1)."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "1234", "quantity": 3}}]}
+    ]
+  },
+  {
+    "id": "2038",
+    "description": "Tạo đơn hàng quà tặng",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Gửi 1 giỏ hoa quả mã QUA-05 đến Bệnh viện Chợ Rẫy, Quận 5."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "QUA-05", "quantity": 1, "address": "Bệnh viện Chợ Rẫy, Quận 5"}}]}
+    ]
+  },
+  {
+    "id": "2039",
+    "description": "Doanh thu ngày hôm nay",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Hôm nay (16/04/2026) bán được bao nhiêu rồi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-16", "end_date": "2026-04-16"}}]}
+    ]
+  },
+  {
+    "id": "2040",
+    "description": "Hủy đơn hàng trùng",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy bớt đơn 6677 giúp mình, mình lỡ bấm đặt 2 lần."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "6677"}}]}
+    ]
+  },
+  {
+    "id": "2041",
+    "description": "Kiểm tra tồn kho máy tính",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Laptop Dell XPS 13 còn hàng không shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "DELL-XPS-13"}}]}
+    ]
+  },
+  {
+    "id": "2042",
+    "description": "Doanh thu tuần đầu tháng 4",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Cho mình xem doanh thu từ 01/04/2026 đến 07/04/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-01", "end_date": "2026-04-07"}}]}
+    ]
+  },
+  {
+    "id": "2043",
+    "description": "Tạo đơn hàng thực phẩm",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt 5 kg gạo ST25 giao đến 123 Phan Xích Long, Phú Nhuận."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "GAO-ST25", "quantity": 5, "address": "123 Phan Xích Long, Phú Nhuận"}}]}
+    ]
+  },
+  {
+    "id": "2044",
+    "description": "Tra cứu đơn hàng",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng mã 445566 của mình trạng thái sao rồi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "445566"}}]}
+    ]
+  },
+  {
+    "id": "2045",
+    "description": "Cập nhật địa chỉ",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đổi địa chỉ đơn 1020 sang số 10 Trần Hưng Đạo, Quận 1 nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "1020", "address": "số 10 Trần Hưng Đạo, Quận 1"}}]}
+    ]
+  },
+  {
+    "id": "2046",
+    "description": "Hủy đơn hàng",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy giúp mình đơn ORD-554 nhé, mình không mua nữa."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "ORD-554"}}]}
+    ]
+  },
+  {
+    "id": "2047",
+    "description": "Check kho linh kiện",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Bên mình còn chuột Logitech G502 không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "LOGI-G502"}}]}
+    ]
+  },
+  {
+    "id": "2048",
+    "description": "Doanh thu ngày hôm qua",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Thống kê doanh số ngày 15/04/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-15", "end_date": "2026-04-15"}}]}
+    ]
+  },
+  {
+    "id": "2049",
+    "description": "Đặt mua đồ uống",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy cho mình 10 thùng Coca Cola ship về 55 Nguyễn Huệ, Quận 1."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "COCA-10", "quantity": 10, "address": "55 Nguyễn Huệ, Quận 1"}}]}
+    ]
+  },
+  {
+    "id": "2050",
+    "description": "Tăng số lượng sản phẩm",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 9988 mình muốn lấy 3 cái thay vì 1 cái."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "9988", "quantity": 3}}]}
+    ]
+  },
+  {
+    "id": "2051",
+    "description": "Hủy đơn hàng sai",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Xóa đơn 7711 giúp mình, mình đặt nhầm mã hàng."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "7711"}}]}
+    ]
+  },
+  {
+    "id": "2052",
+    "description": "Kiểm tra kho điện thoại",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Samsung S24 Ultra còn máy không bạn?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "SS-S24U"}}]}
+    ]
+  },
+  {
+    "id": "2053",
+    "description": "Doanh thu cả tháng 3",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Tổng kết doanh thu tháng 3 năm 2026 (01/03 - 31/03)."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-03-01", "end_date": "2026-03-31"}}]}
+    ]
+  },
+  {
+    "id": "2054",
+    "description": "Tạo đơn hàng thời trang",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua 2 cái áo thun trắng size XL gửi qua 88 Lê Duẩn, Đà Nẵng."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "TSHIRT-W-XL", "quantity": 2, "address": "88 Lê Duẩn, Đà Nẵng"}}]}
+    ]
+  },
+  {
+    "id": "2055",
+    "description": "Xem đơn hàng gần nhất",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Check tình trạng đơn #9090 giúp mình."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "9090"}}]}
+    ]
+  },
+  {
+    "id": "2057",
+    "description": "Tra cứu đơn hàng điện tử",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Cho mình hỏi đơn hàng #ECB-99281 của mình đang ở giai đoạn nào rồi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "ECB-99281"}}]}
+    ]
+  },
+  {
+    "id": "2058",
+    "description": "Kiểm tra hàng tồn kho bàn phím",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Bàn phím AKKO 3068B Multi-modes còn hàng sẵn không shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "AKKO-3068B"}}]}
+    ]
+  },
+  {
+    "id": "2059",
+    "description": "Kiểm tra trạng thái đơn hàng vận chuyển",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng mã 77221 đã giao đến kho phân loại chưa?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "77221"}}]}
+    ]
+  },
+  {
+    "id": "2060",
+    "description": "Check kho thiết bị nhà bếp",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Bên kho còn sẵn máy ép chậm Hurom H200 màu đỏ không em?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "HUROM-H200-RED"}}]}
+    ]
+  },
+  {
+    "id": "2061",
+    "description": "Kiểm tra tồn kho màn hình",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Màn hình Dell UltraSharp U2723QE còn hàng ở chi nhánh Quận 1 không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "DELL-U2723QE"}}]}
+    ]
+  },
+  {
+    "id": "2062",
+    "description": "Tra cứu đơn hàng bằng mã số",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Kiểm tra tình trạng đơn hàng số 110992 giúp mình."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "110992"}}]}
+    ]
+  },
+  {
+    "id": "2063",
+    "description": "Check hàng tồn mỹ phẩm",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Sữa rửa mặt CeraVe cho da dầu dung tích 473ml còn không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "CERAVE-FOAM-473"}}]}
+    ]
+  },
+  {
+    "id": "2064",
+    "description": "Hỏi trạng thái đơn hàng cũ",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 55441 giao từ tuần trước sao giờ mình vẫn chưa nhận được?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "55441"}}]}
+    ]
+  },
+  {
+    "id": "2065",
+    "description": "Kiểm tra tồn kho ổ cứng",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Ổ cứng SSD Samsung 980 Pro 1TB còn hàng không shop ơi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "SSD-SAM-980P-1T"}}]}
+    ]
+  },
+  {
+    "id": "2066",
+    "description": "Doanh thu ngày hôm qua",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Báo cáo doanh số bán hàng ngày 15/04/2026 cho mình nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-15", "end_date": "2026-04-15"}}]}
+    ]
+  },
+  {
+    "id": "2067",
+    "description": "Doanh thu tuần đầu tháng 4",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Cho xem tổng doanh thu từ ngày 01/04 đến hết ngày 07/04 năm 2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-01", "end_date": "2026-04-07"}}]}
+    ]
+  },
+  {
+    "id": "2068",
+    "description": "Doanh thu nửa tháng",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Thống kê doanh thu từ 01/01/2026 đến 15/01/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-01-01", "end_date": "2026-01-15"}}]}
+    ]
+  },
+  {
+    "id": "2069",
+    "description": "Doanh thu cuối năm",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Xem cho tôi báo cáo tiền về từ 01/12/2025 đến 31/12/2025."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2025-12-01", "end_date": "2025-12-31"}}]}
+    ]
+  },
+  {
+    "id": "2070",
+    "description": "Doanh thu tháng trước",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Thống kê tiền bán hàng cả tháng 3 vừa rồi (từ 01/03 đến 31/03/2026)."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-03-01", "end_date": "2026-03-31"}}]}
+    ]
+  },
+  {
+    "id": "2071",
+    "description": "Doanh thu quý 1",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Tổng kết doanh số 3 tháng đầu năm 2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-01-01", "end_date": "2026-03-31"}}]}
+    ]
+  },
+  {
+    "id": "2072",
+    "description": "Doanh thu ngày lễ 14/2",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Báo cáo doanh thu ngày Valentine 14/02/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-02-14", "end_date": "2026-02-14"}}]}
+    ]
+  },
+  {
+    "id": "2073",
+    "description": "Doanh thu tuần hiện tại",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Thống kê doanh thu tuần này từ 13/04 đến 16/04."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-13", "end_date": "2026-04-16"}}]}
+    ]
+  },
+  {
+    "id": "2074",
+    "description": "Doanh thu đợt sale giữa tháng",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Cho xem số liệu bán hàng từ 14/03 đến 16/03 năm nay."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-03-14", "end_date": "2026-03-16"}}]}
+    ]
+  },
+  {
+    "id": "2075",
+    "description": "Doanh thu cả năm 2025",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Tổng hợp doanh thu cả năm ngoái (01/01/2025 - 31/12/2025)."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2025-01-01", "end_date": "2025-12-31"}}]}
+    ]
+  },
+  {
+    "id": "2076",
+    "description": "Đặt mua tai nghe cao cấp",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt 2 cái tai nghe Sony WH-1000XM5 giao đến tòa nhà Bitexco, Quận 1, TP.HCM."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "SONY-XM5", "quantity": 2, "address": "tòa nhà Bitexco, Quận 1, TP.HCM"}}]}
+    ]
+  },
+  {
+    "id": "2077",
+    "description": "Tạo đơn hàng văn phòng phẩm",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy cho mình 5 hộp giấy A4 Double A gửi về 456 Nguyễn Huệ, Quận 1."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "GIAY-A4-DA", "quantity": 5, "address": "456 Nguyễn Huệ, Quận 1"}}]}
+    ]
+  },
+  {
+    "id": "2078",
+    "description": "Đặt mua đồ công nghệ",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua 1 chiếc iPad Pro M2 giao tới số 20 Cầu Giấy, Hà Nội."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "IPAD-M2", "quantity": 1, "address": "số 20 Cầu Giấy, Hà Nội"}}]}
+    ]
+  },
+  {
+    "id": "2079",
+    "description": "Tạo đơn hàng phụ kiện xe",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt cho tôi 4 cái lốp xe Michelin gửi đến Gara 79 Trần Phú, Đà Nẵng."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "LOP-MICHELIN", "quantity": 4, "address": "Gara 79 Trần Phú, Đà Nẵng"}}]}
+    ]
+  },
+  {
+    "id": "2080",
+    "description": "Đặt hàng đồ gia dụng",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy cho chị 1 cái máy lọc không khí Xiaomi 4 Lite gửi về số 15 đường Trần Phú, Hải Phòng."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "MI-AIR-4L", "quantity": 1, "address": "số 15 đường Trần Phú, Hải Phòng"}}]}
+    ]
+  },
+  {
+    "id": "2081",
+    "description": "Tạo đơn hàng nước giải khát",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy 10 thùng Coca giao đến số 5 đường Cách Mạng Tháng 8, Quận 10."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "COCA-CORP", "quantity": 10, "address": "số 5 đường Cách Mạng Tháng 8, Quận 10"}}]}
+    ]
+  },
+  {
+    "id": "2082",
+    "description": "Đặt mua điện thoại mới",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt 1 cái Samsung Galaxy S24 Ultra giao về số 10 Phan Xích Long, Phú Nhuận."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "SS-S24U", "quantity": 1, "address": "số 10 Phan Xích Long, Phú Nhuận"}}]}
+    ]
+  },
+  {
+    "id": "2083",
+    "description": "Tạo đơn hàng đồ thể thao",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua 3 bộ quần áo tập gym nam size L gửi qua chung cư Sunview Town, Thủ Đức."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "GYM-M-L", "quantity": 3, "address": "chung cư Sunview Town, Thủ Đức"}}]}
+    ]
+  },
+  {
+    "id": "2084",
+    "description": "Đặt mua thực phẩm chức năng",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy cho tôi 5 lọ Vitamin C DHC gửi đến 88 Nguyễn Văn Cừ, Quận 5."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "DHC-VIT-C", "quantity": 5, "address": "88 Nguyễn Văn Cừ, Quận 5"}}]}
+    ]
+  },
+  {
+    "id": "2085",
+    "description": "Đặt mua sách số lượng lớn",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua 20 cuốn 'Đắc Nhân Tâm' giao đến Thư viện tỉnh Bình Dương."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "SACH-DNT", "quantity": 20, "address": "Thư viện tỉnh Bình Dương"}}]}
+    ]
+  },
+  {
+    "id": "2086",
+    "description": "Đặt mua đồ chơi trẻ em",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt cho tôi 1 bộ Lego Ninjago giao đến 12 đường 3/2, Quận 10."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "LEGO-NJG", "quantity": 1, "address": "12 đường 3/2, Quận 10"}}]}
+    ]
+  },
+  {
+    "id": "2087",
+    "description": "Tạo đơn hàng gia dụng thông minh",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy 1 robot hút bụi Roborock S8 gửi qua Vinhomes Central Park, Bình Thạnh."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "ROBOROCK-S8", "quantity": 1, "address": "Vinhomes Central Park, Bình Thạnh"}}]}
+    ]
+  },
+  {
+    "id": "2088",
+    "description": "Đặt mua mỹ phẩm cho nữ",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua 2 thỏi son Black Rouge màu A12 giao về 34 Lê Lợi, Huế."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "SON-BR-A12", "quantity": 2, "address": "34 Lê Lợi, Huế"}}]}
+    ]
+  },
+  {
+    "id": "2089",
+    "description": "Đặt mua đồng hồ thông minh",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt 1 Apple Watch Series 9 giao đến số 55 Quang Trung, Hà Đông, Hà Nội."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "AW-S9", "quantity": 1, "address": "số 55 Quang Trung, Hà Đông, Hà Nội"}}]}
+    ]
+  },
+  {
+    "id": "2090",
+    "description": "Tạo đơn hàng thực phẩm khô",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua 10 gói khô bò loại đặc biệt giao về số 2 Tôn Thất Tùng, Hà Nội."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "KHO-BO-SPEC", "quantity": 10, "address": "số 2 Tôn Thất Tùng, Hà Nội"}}]}
+    ]
+  },
+  {
+    "id": "2091",
+    "description": "Hủy đơn hàng do muốn đổi mẫu",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy đơn hàng #DH772 giúp mình nhé, mình định đổi sang màu khác."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "DH772"}}]}
+    ]
+  },
+  {
+    "id": "2092",
+    "description": "Cập nhật địa chỉ cho đơn hàng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng 8899 đổi sang địa chỉ 123 Lý Tự Trọng, Quận 1 nhé shop."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "8899", "address": "123 Lý Tự Trọng, Quận 1"}}]}
+    ]
+  },
+  {
+    "id": "2093",
+    "description": "Cập nhật số lượng đơn hàng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Mã đơn 1010 cho mình lấy 5 cái thay vì 2 cái."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "1010", "quantity": 5}}]}
+    ]
+  },
+  {
+    "id": "2094",
+    "description": "Hủy đơn hàng không cần thiết",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Xóa dùm mình đơn ORD_556 với, mình không mua nữa."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "ORD_556"}}]}
+    ]
+  },
+  {
+    "id": "2095",
+    "description": "Cập nhật địa chỉ nhận hàng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 1002 mình ghi nhầm địa chỉ, sửa lại thành 720A Điện Biên Phủ, Bình Thạnh giúp shop ơi."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "1002", "address": "720A Điện Biên Phủ, Bình Thạnh"}}]}
+    ]
+  },
+  {
+    "id": "2096",
+    "description": "Hủy đơn hàng do trùng lặp",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy bớt đơn 6677 giúp mình, mình lỡ bấm đặt 2 lần giống nhau."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "6677"}}]}
+    ]
+  },
+  {
+    "id": "2097",
+    "description": "Cập nhật số lượng sản phẩm",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Sửa lại đơn 3344, mình muốn giảm số lượng xuống còn 1 cái thôi."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "3344", "quantity": 1}}]}
+    ]
+  },
+  {
+    "id": "2098",
+    "description": "Hủy đơn hàng do giao lâu",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Thôi hủy đơn #9900 giúp mình, chờ lâu quá mình không cần nữa."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "9900"}}]}
+    ]
+  },
+  {
+    "id": "2099",
+    "description": "Cập nhật địa chỉ và số lượng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 1234: sửa thành 10 cái và giao đến 10 Trần Hưng Đạo, Quận 1."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "1234", "quantity": 10, "address": "10 Trần Hưng Đạo, Quận 1"}}]}
+    ]
+  },
+  {
+    "id": "2100",
+    "description": "Tăng số lượng đơn hàng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Cho mình lấy thêm 3 cái nữa vào đơn hàng 5566 nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "5566", "quantity": 3}}]}
+    ]
+  },
+  {
+    "id": "2101",
+    "description": "Hủy đơn hàng khách hàng yêu cầu",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Mình muốn hủy đơn hàng mã DH_992."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "DH_992"}}]}
+    ]
+  },
+  {
+    "id": "2102",
+    "description": "Hủy đơn hàng thực phẩm",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy đơn hàng 4433 giúp chị, nhà có người mua rồi."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "4433"}}]}
+    ]
+  },
+  {
+    "id": "2103",
+    "description": "Hủy đơn hàng văn phòng phẩm",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Xóa hộ mình đơn hàng ORD-7711 nhé shop."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "ORD-7711"}}]}
+    ]
+  },
+  {
+    "id": "2104",
+    "description": "Hủy đơn hàng sai địa chỉ",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy đơn 2299 để mình đặt lại đơn khác đúng địa chỉ hơn."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "2299"}}]}
+    ]
+  },
+  {
+    "id": "2105",
+    "description": "Hủy đơn hàng quà tặng",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy đơn quà tặng mã 556677 giúp mình nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "556677"}}]}
+    ]
+  },
+  {
+    "id": "2106",
+    "description": "Hủy đơn hàng vì bận",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Xóa đơn hàng ORD-1102 đi, mình bận đi công tác không nhận được."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "ORD-1102"}}]}
+    ]
+  },
+  {
+    "id": "2107",
+    "description": "Kiểm tra tồn kho máy tính bảng",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Máy tính bảng Samsung Galaxy Tab S9 FE còn hàng không shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "SS-TAB-S9FE"}}]}
+    ]
+  },
+  {
+    "id": "2108",
+    "description": "Tra cứu đơn hàng gia dụng",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Cho mình hỏi đơn hàng #APP-88271 của mình đã đóng gói xong chưa?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "APP-88271"}}]}
+    ]
+  },
+  {
+    "id": "2109",
+    "description": "Kiểm tra hàng tồn kho loa bluetooth",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Loa Marshall Stanmore III màu kem còn sẵn hàng không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "MAR-STAN-3-CRM"}}]}
+    ]
+  },
+  {
+    "id": "2110",
+    "description": "Tra cứu trạng thái đơn hàng thời trang",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng mã 66229 đã giao đến bưu cục quận 10 chưa shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "66229"}}]}
+    ]
+  },
+  {
+    "id": "2115",
+    "description": "Check hàng tồn máy ảnh",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Máy ảnh Sony Alpha A7 IV còn hàng tại chi nhánh Đà Nẵng không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "SONY-A7IV"}}]}
+    ]
+  },
+  {
+    "id": "2116",
+    "description": "Doanh thu ngày lễ 30/04",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Báo cáo doanh số bán hàng ngày lễ 30/04/2026 cho mình."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-30", "end_date": "2026-04-30"}}]}
+    ]
+  },
+  {
+    "id": "2117",
+    "description": "Doanh thu tuần cuối tháng 5",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Cho xem doanh thu từ ngày 24/05/2026 đến ngày 31/05/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-05-24", "end_date": "2026-05-31"}}]}
+    ]
+  },
+  {
+    "id": "2125",
+    "description": "Doanh thu nửa năm 2026",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Tổng kết doanh số từ 01/01/2026 đến hết 30/06/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-01-01", "end_date": "2026-06-30"}}]}
+    ]
+  },
+  {
+    "id": "2126",
+    "description": "Đặt mua màn hình đồ họa",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt cho mình 1 màn hình ASUS ProArt giao đến số 12 đường Hoàng Diệu, Quận 4."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "ASUS-PROART", "quantity": 1, "address": "số 12 đường Hoàng Diệu, Quận 4"}}]}
+    ]
+  },
+  {
+    "id": "2127",
+    "description": "Đặt mua đồ dùng nhà bếp",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy 2 cái chảo gang Lodge gửi về chung cư Vinhomes Grand Park, Quận 9."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "GANG-LODGE", "quantity": 2, "address": "chung cư Vinhomes Grand Park, Quận 9"}}]}
+    ]
+  },
+  {
+    "id": "2130",
+    "description": "Tạo đơn hàng mỹ phẩm cao cấp",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt 3 lọ nước thần SK-II giao đến số 88 Trần Hưng Đạo, Hoàn Kiếm, Hà Nội."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "SKII-150ML", "quantity": 3, "address": "số 88 Trần Hưng Đạo, Hoàn Kiếm, Hà Nội"}}]}
+    ]
+  },
+  {
+    "id": "2140",
+    "description": "Đặt mua máy tính xách tay",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Mua 1 con MacBook Air M3 giao qua tòa nhà Viettel Tower, Quận 10."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "MAC-AIR-M3", "quantity": 1, "address": "tòa nhà Viettel Tower, Quận 10"}}]}
+    ]
+  },
+  {
+    "id": "2141",
+    "description": "Thay đổi địa chỉ đơn hàng điện thoại",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng 7722 của mình đổi địa chỉ sang 15 Võ Văn Tần, Quận 3 nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "7722", "address": "15 Võ Văn Tần, Quận 3"}}]}
+    ]
+  },
+  {
+    "id": "2142",
+    "description": "Tăng số lượng đơn hàng linh kiện",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Mã đơn 88192 mình muốn lấy 10 con chuột thay vì 2 con."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "88192", "quantity": 10}}]}
+    ]
+  },
+  {
+    "id": "2150",
+    "description": "Hủy đơn hàng quà tặng",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy đơn hàng #GIFT-101 giúp mình, mình tự đi mua tặng rồi."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "GIFT-101"}}]}
+    ]
+  },
+  {
+    "id": "2151",
+    "description": "Cập nhật địa chỉ giao hàng gấp",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 55443 sửa lại địa chỉ là số 2 Hà Huy Tập, Phú Mỹ Hưng giúp mình."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "55443", "address": "số 2 Hà Huy Tập, Phú Mỹ Hưng"}}]}
+    ]
+  },
+  {
+    "id": "2155",
+    "description": "Hủy đơn hàng máy giặt",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Xóa đơn hàng mã MG-882 đi nhé, gia đình đổi ý không mua nữa."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "MG-882"}}]}
+    ]
+  },
+  {
+    "id": "2156",
+    "description": "Hủy đơn hàng cuối danh sách",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Tôi muốn hủy giao dịch đơn số 101099."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "101099"}}]}
+    ]
+  },
+  {
+    "id": "2157",
+    "description": "Kiểm tra tồn kho phụ kiện gaming",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Chuột không dây Logitech G304 màu trắng còn hàng không shop?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "LOGI-G304-W"}}] }
+    ]
+  },
+  {
+    "id": "2158",
+    "description": "Hỏi hàng tồn đồ lặn",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Kính lặn chuyên dụng mã DIVE-01 còn sẵn ở showroom không?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "DIVE-01"}}] }
+    ]
+  },
+  {
+    "id": "2165",
+    "description": "Check hàng thời trang",
+    "tool_used": ["check_inventory"],
+    "messages": [
+      {"role": "user", "content": "Áo khoác gió Uniqlo size M màu xanh navy còn không em?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "check_inventory", "arguments": {"product_id": "UNI-JKT-M-NVY"}}] }
+    ]
+  },
+  {
+    "id": "2174",
+    "description": "Doanh thu tuần thứ 2 tháng 4",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Xem doanh thu từ 08/04/2026 đến 14/04/2026 giúp anh."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-08", "end_date": "2026-04-14"}}] }
+    ]
+  },
+  {
+    "id": "2175",
+    "description": "Doanh thu ngày quốc tế lao động",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Ngày 01/05/2026 năm nay hệ thống bán được bao nhiêu?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-05-01", "end_date": "2026-05-01"}}] }
+    ]
+  },
+  {
+    "id": "2180",
+    "description": "Doanh thu cả quý 2/2026",
+    "tool_used": ["revenue_analysis"],
+    "messages": [
+      {"role": "user", "content": "Thống kê tài chính từ 01/04/2026 đến hết 30/06/2026."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "revenue_analysis", "arguments": {"start_date": "2026-04-01", "end_date": "2026-06-30"}}] }
+    ]
+  },
+  {
+    "id": "2191",
+    "description": "Check mã vận đơn mới",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng ORD-XYZ-789 của mình hiện tại đang ở đâu rồi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "ORD-XYZ-789"}}] }
+    ]
+  },
+  {
+    "id": "2200",
+    "description": "Kiểm tra đơn hàng thực phẩm",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Check dùm mình trạng thái đơn hàng 221199 nhé."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "221199"}}] }
+    ]
+  },
+  {
+    "id": "2208",
+    "description": "Đặt mua đồ uống",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Lấy cho mình 5 thùng nước ngọt Pepsi giao đến 32 đường CMT8, Quận 3."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "PEPSI-CAN", "quantity": 5, "address": "32 đường CMT8, Quận 3"}}] }
+    ]
+  },
+  {
+    "id": "2215",
+    "description": "Mua thiết bị y tế",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Đặt 1 máy đo huyết áp Omron giao về địa chỉ 100 Lê Lợi, TP. Huế."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "OMRON-BPM", "quantity": 1, "address": "100 Lê Lợi, TP. Huế"}}] }
+    ]
+  },
+  {
+    "id": "2220",
+    "description": "Mua đồ dùng mẹ và bé",
+    "tool_used": ["create_order"],
+    "messages": [
+      {"role": "user", "content": "Gửi cho chị 3 bịch bỉm Moony size L đến Chung cư Times City, Tòa T11, Hà Nội."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "create_order", "arguments": {"product_id": "MOONY-L", "quantity": 3, "address": "Chung cư Times City, Tòa T11, Hà Nội"}}] }
+    ]
+  },
+  {
+    "id": "2226",
+    "description": "Đổi địa chỉ giao hàng do đi vắng",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn 5522 đổi sang địa chỉ 88 Nguyễn Huệ, Quận 1 nhé shop."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "5522", "address": "88 Nguyễn Huệ, Quận 1"}}] }
+    ]
+  },
+  {
+    "id": "2230",
+    "description": "Tăng số lượng mua vì nhu cầu cao",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Chỉnh lại đơn 4411, mình lấy 20 cái thay vì 5 cái như lúc đầu."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "4411", "quantity": 20}}] }
+    ]
+  },
+  {
+    "id": "2240",
+    "description": "Cập nhật đơn hàng phụ kiện",
+    "tool_used": ["update_order"],
+    "messages": [
+      {"role": "user", "content": "Sửa đơn hàng mã ID-7788: giao đến nhà số 12, ngõ 10 Phố Huế, Hà Nội."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "update_order", "arguments": {"order_id": "ID-7788", "address": "nhà số 12, ngõ 10 Phố Huế, Hà Nội"}}] }
+    ]
+  },
+  {
+    "id": "2242",
+    "description": "Hủy đơn hàng do lỡ tay",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Hủy hộ cái đơn vừa đặt xong mã 992288 đi shop, mình ấn nhầm."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "992288"}}] }
+    ]
+  },
+  {
+    "id": "2250",
+    "description": "Hủy đơn hàng vì không cần nữa",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Xóa đơn hàng ORD-662 giúp mình, mình không cần dùng nữa."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "ORD-662"}}] }
+    ]
+  },
+  {
+    "id": "2256",
+    "description": "Hủy đơn hàng cuối cùng trong ngày",
+    "tool_used": ["delete_order"],
+    "messages": [
+      {"role": "user", "content": "Tôi muốn hủy yêu cầu mua hàng mã #101002."},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "delete_order", "arguments": {"order_id": "101002"}}] }
+    ]
+  },
+  {
+    "id": "2257",
+    "description": "Check mã vận đơn mới",
+    "tool_used": ["get_order"],
+    "messages": [
+      {"role": "user", "content": "Đơn hàng ORD13415 của mình hiện tại đang ở đâu rồi?"},
+      {"role": "assistant", "content": null, "tool_calls": [{"name": "get_order", "arguments": {"order_id": "ORD13415"}}] }
+    ]
+  }
 
 ]
