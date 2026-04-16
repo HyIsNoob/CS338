@@ -52,7 +52,7 @@ n_epoch = 500
 epoch_save_frequency = 3
 epoch_save_path = 'updated_2_model_weights'
 
-epoch_length_fixed = 500
+epoch_length_fixed = 1000
 
 ########################################################################################################
 
