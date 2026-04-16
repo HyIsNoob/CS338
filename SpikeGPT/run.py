@@ -72,16 +72,13 @@ os.environ["RWKV_RUN_DEVICE"] = args.RUN_DEVICE
 #context = 'Aaron loves mint chocolate cake, but he requires that it be paired with mini chocolate chips, so I threw some of those in between the layers. I also had a few Peppermint Jo Jos on hand so I crushed them up and threw some of those in along with some crushed meringue cookies because, why not? It’s a total smorgasbord of minty chocolate chippy cookie crunchy goodness. I didn’t measure how much of each topping I used, but after I tasted the finished product, I wish I had added more. You can add anything you want- crushed candy canes, peppermint bark, etc. And don’t be afraid to use a heavy hand. Texture = good.'
 # context = 'Xin chào'
 # context = "In a shocking finding, scientist discovered a herd of dragons living in a remote, previously unexplored valley, in Tibet. Even more surprising to the researchers was the fact that the dragons spoke perfect Chinese."
-context = """
+context = '''
 <|im_start|>system
 Bạn là trợ lý AI hỗ trợ khách hàng. Hãy trả lời rõ ràng, chính xác và hữu ích.<|im_end|>
 <|im_start|>user
 Bạn kiểm tra giúp tôi xem mã sản phẩm SP-8845 trong kho còn hàng không nhé.<|im_end|>
 <|im_start|>assistant
-<tool_call>
-{\"name\": \"check_inventory\", \"arguments\": {\"product_id\": \"SP-8845\"}}
-</tool_call><|im_end|>
-""".strip()
+'''.strip()
 # context = "\n深圳是" # test Chinese
 # context = "\n東京は" # test Japanese
 
