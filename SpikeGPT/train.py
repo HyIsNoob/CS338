@@ -49,10 +49,10 @@ lr_final = 1e-5
 # the mini-epoch is very short and of fixed length (ctx_len * epoch_length_fixed tokens)
 n_epoch = 500
 # 0 = never, 1 = every mini-epoch, 2 = every two mini-epochs, etc.
-epoch_save_frequency = 5
+epoch_save_frequency = 3
 epoch_save_path = 'updated_2_model_weights'
 
-epoch_length_fixed = 3000
+epoch_length_fixed = 500
 
 ########################################################################################################
 
