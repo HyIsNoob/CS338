@@ -229,7 +229,7 @@ class Trainer:
                         if hasattr(unwrapped_model, "module")
                         else unwrapped_model
                     )
-                    best_path = self.config.epoch_save_path + f'epoch{epoch + 1}_best.pth'
+                    best_path = self.config.epoch_save_path + f'(best).pth'
                     torch.save(raw_model.state_dict(), best_path)
                     if accelerator.is_local_main_process:
                         print(f"  --> New best val_loss={val_loss:.6f}, saved to {best_path}")
