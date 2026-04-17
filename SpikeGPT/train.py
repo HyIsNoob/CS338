@@ -96,8 +96,8 @@ if __name__ == '__main__':
     # # load a trained model. remember to change random seed
 #     m2 = torch.load('../SpikeGPT/updated_2_model_weights151.pth',map_location=torch.device('cpu'))
 #     model.load_state_dict(m2)
+    # valid_dataset = None
     
-    valid_dataset = None
     test_dataset = None
     print('model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
           betas, 'eps', eps, 'ctx', ctx_len, 'layer', n_layer, 'embd', n_embd, )
