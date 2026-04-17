@@ -37,7 +37,7 @@ class TrainerConfig:
     betas = (0.9, 0.99)
     eps = 1e-8
     grad_norm_clip = 1.0
-    lr_decay = True  # linear warmup followed by cosine decay
+    lr_decay = True 
     warmup_tokens = 0
     final_tokens = 0
     epoch_save_frequency = 0
@@ -219,7 +219,6 @@ class Trainer:
                 )
                 log_file.flush()
 
-                # FIX 7: Save best model based on validation loss (was commented out)
                 if val_loss < self.min_val_loss:
                     self.min_val_loss = val_loss
                     accelerator.wait_for_everyone()
