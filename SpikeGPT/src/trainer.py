@@ -20,8 +20,6 @@ import pdb
 from accelerate import Accelerator
 from src.model import L2Wrap
 
-# import wandb  # comment this if you don't have wandb
-# print('logging to wandb... (comment it if you don\'t have wandb)')
 accelerator = Accelerator()
 
 logger = logging.getLogger(__name__)
@@ -60,27 +58,25 @@ class Trainer:
         self.valid_dataset = valid_dataset
         self.config = config
         self.avg_loss = -1
-        self.min_dev_loss = 100
-        self.dev_loss = -1
         self.steps = 0
+        self.lr = config.learning_rate
 
-        #         if 'wandb' in sys.modules:
-        #             cfg = model.config
-        #             for k in config.__dict__:
-        #                 setattr(cfg, k, config.__dict__[k])  # combine cfg
-        #             wandb.init(project="RWKV-LM", name=self.get_run_name() + '-' +
-        #                        datetime.datetime.today().strftime('%Y-%m-%d-%H-%M-%S'), config=cfg, save_code=False)
+        # Validation tracking
+        self.train_loss_history = []
+        self.val_loss_history = []
+        self.min_val_loss = float('inf')
 
         self.device = 'cpu'
-        if torch.cuda.is_available():  # take over whatever gpus are on the system
+        if torch.cuda.is_available():
             self.device = torch.cuda.current_device()
 
     def get_run_name(self):
-        raw_model = self.model.module if hasattr(
-            self.model, "module") else self.model
+        raw_model = self.model.module if hasattr(self.model, "module") else self.model
         cfg = raw_model.config
-        run_name = str(cfg.vocab_size) + '-' + str(cfg.ctx_len) + '-' + \
-                   cfg.model_type + '-' + str(cfg.n_layer) + '-' + str(cfg.n_embd)
+        run_name = (
+            str(cfg.vocab_size) + '-' + str(cfg.ctx_len) + '-' +
+            cfg.model_type + '-' + str(cfg.n_layer) + '-' + str(cfg.n_embd)
+        )
         return run_name
 
     def train(self):
@@ -92,127 +88,163 @@ class Trainer:
 
         def run_epoch(split):
             is_train = split == 'train'
-            data = self.train_dataset if is_train else self.test_dataset
-            if split == 'valid':
+
+            # FIX 1: Correctly select dataset for each split
+            if split == 'train':
+                data = self.train_dataset
+            elif split == 'valid':
                 data = self.valid_dataset
-            # pdb.set_trace()
-            model.train(is_train)
-            if config.num_workers > 0:
-                loader = DataLoader(data, shuffle=False, pin_memory=True,
-                                    batch_size=config.batch_size,
-                                    num_workers=config.num_workers)
-            else:
-                loader = DataLoader(data, shuffle=False,
-                                    batch_size=config.batch_size,
-                                    num_workers=config.num_workers)
+            else:  # 'test'
+                data = self.test_dataset
 
+            model.train(is_train)
+
+            loader = DataLoader(
+                data,
+                shuffle=is_train,           # FIX 2: Shuffle only during training
+                pin_memory=(config.num_workers > 0),
+                batch_size=config.batch_size,
+                num_workers=config.num_workers,
+            )
             loader = accelerator.prepare(loader)
-            pbar = tqdm(enumerate(loader), total=len(
-                loader), bar_format='{l_bar}{bar:10}{r_bar}{bar:-10b}',
-                        disable=not accelerator.is_local_main_process) if is_train else enumerate(loader)
 
-            model.train(is_train)
-            dev_loss_all = 0
+            pbar = (
+                tqdm(
+                    enumerate(loader),
+                    total=len(loader),
+                    bar_format='{l_bar}{bar:10}{r_bar}{bar:-10b}',
+                    disable=not accelerator.is_local_main_process,
+                )
+                if is_train else enumerate(loader)
+            )
+
+            loss_sum = 0.0
+            loss_count = 0
 
             for it, (x, y) in pbar:
-                # x = x.to(self.device)  # place data on the correct device
-                # y = y.to(self.device)
-
                 with torch.set_grad_enabled(is_train):
-                    loss = model(x, y)  # forward the model
+                    loss = model(x, y)
                     functional.reset_net(model)
 
-                if is_train:  # backprop and update the parameters
+                if is_train:
                     model.zero_grad()
-                    # loss.backward()
                     accelerator.backward(loss)
 
                     if config.grad_norm_clip > 0:
                         torch.nn.utils.clip_grad_norm_(
-                            model.parameters(), config.grad_norm_clip)
+                            model.parameters(), config.grad_norm_clip
+                        )
 
                     optimizer.step()
 
-                    if config.lr_decay:  # decay the learning rate based on our progress
-                        # number of tokens processed this step (i.e. label is not -100)
+                    # Learning rate schedule
+                    if config.lr_decay:
                         self.tokens += (y >= 0).sum()
                         lr_final_factor = config.lr_final / config.learning_rate
                         if self.tokens < config.warmup_tokens:
-                            # linear warmup
-                            lr_mult = lr_final_factor + \
-                                      (1 - lr_final_factor) * float(self.tokens) / \
-                                      float(config.warmup_tokens)
+                            lr_mult = lr_final_factor + (1 - lr_final_factor) * float(
+                                self.tokens
+                            ) / float(config.warmup_tokens)
                             progress = 0
                         else:
-                            # cosine learning rate decay
-                            progress = float(self.tokens - config.warmup_tokens) / float(
-                                max(1, config.final_tokens - config.warmup_tokens))
-                            lr_mult = (0.5 + lr_final_factor / 2) + (0.5 - lr_final_factor /
-                                                                     2) * math.cos(
-                                math.pi * progress)  # better 1.0 ~ 0.1
-                        lr = config.learning_rate * lr_mult
+                            progress = float(
+                                self.tokens - config.warmup_tokens
+                            ) / float(max(1, config.final_tokens - config.warmup_tokens))
+                            lr_mult = (0.5 + lr_final_factor / 2) + (
+                                0.5 - lr_final_factor / 2
+                            ) * math.cos(math.pi * progress)
+                        self.lr = config.learning_rate * lr_mult
                         for param_group in optimizer.param_groups:
-                            param_group['lr'] = lr
+                            param_group['lr'] = self.lr
                     else:
-                        lr = config.learning_rate
+                        progress = 0
 
-                    now_loss = loss.item()  # report progress
-                    self.lr = lr
-
-                    #                     if 'wandb' in sys.modules:
-                    #                         wandb.log({"loss": now_loss},
-                    #                                   step=self.steps * self.config.batch_size)
+                    now_loss = loss.item()
                     self.steps += 1
 
                     if self.avg_loss < 0:
                         self.avg_loss = now_loss
                     else:
                         factor = 1 / (it + 1)
-                        self.avg_loss = self.avg_loss * \
-                                        (1.0 - factor) + now_loss * factor
+                        self.avg_loss = self.avg_loss * (1.0 - factor) + now_loss * factor
+
                     pbar.set_description(
-                        f"mini-epoch {epoch + 1} prog {progress * 100.0:.2f}% iter {it}: ppl {math.exp(self.avg_loss):.2f} loss {self.avg_loss:.4f} lr {lr:e}")
+                        f"epoch {epoch + 1} prog {progress * 100.0:.2f}% "
+                        f"iter {it}: ppl {math.exp(self.avg_loss):.2f} "
+                        f"loss {self.avg_loss:.4f} lr {self.lr:e}"
+                    )
+
                 else:
-                    dev_loss_all += loss.item()
+                    # FIX 3: Accumulate validation loss properly across all batches
+                    loss_sum += loss.item()
+                    loss_count += 1
+
+            # FIX 4: Return average loss for non-training splits
             if not is_train:
-                self.dev_loss = dev_loss_all / len(loader)
+                avg_eval_loss = loss_sum / max(loss_count, 1)
+                return avg_eval_loss
+            return None
 
-        self.tokens = 0  # counter used for learning rate decay
+        self.tokens = 0
         for epoch in range(config.max_epochs):
-            save_flag = False
 
+            # --- Training ---
+            self.avg_loss = -1  # FIX 5: Reset per-epoch smoothed loss each epoch
             run_epoch('train')
+            self.train_loss_history.append(self.avg_loss)
+
             log_file.write(
-                f'{epoch + 1} {self.avg_loss:.6f} {math.exp(self.avg_loss):.4f} {self.lr:.8f} {datetime.datetime.now()} \n')
+                f'train epoch={epoch + 1} loss={self.avg_loss:.6f} '
+                f'ppl={math.exp(self.avg_loss):.4f} lr={self.lr:.8f} '
+                f'time={datetime.datetime.now()}\n'
+            )
             log_file.flush()
-            
-            # run_epoch('valid')
-            # log_file.write(
-            #     f'{epoch + 1} {self.dev_loss:.6f} {math.exp(self.dev_loss):.4f} {self.lr:.8f} {datetime.datetime.now()} \n')
-            # log_file.flush()
-            #             run_epoch('test')
-            #             log_file.write(
-            #                 f'{epoch+1} {self.dev_loss:.6f} {math.exp(self.dev_loss):.4f} {self.lr:.8f} {datetime.datetime.now()} \n')
-            #             log_file.flush()
 
-            #             if self.dev_loss < self.min_dev_loss:
-            #                 self.min_dev_loss = self.dev_loss
-            #                 save_flag = True
+            # --- Validation ---
+            # FIX 6: Run validation every epoch (was commented out) and log it
+            if self.valid_dataset is not None:
+                val_loss = run_epoch('valid')
+                self.val_loss_history.append(val_loss)
 
-            if (self.config.epoch_save_frequency > 0 and epoch % self.config.epoch_save_frequency == 0) or (
-                    epoch == config.max_epochs - 1):
-                # DataParallel wrappers keep raw model object in .module
+                if accelerator.is_local_main_process:
+                    print(
+                        f"[epoch {epoch + 1}] val_loss={val_loss:.6f} "
+                        f"val_ppl={math.exp(val_loss):.4f}"
+                    )
+
+                log_file.write(
+                    f'valid epoch={epoch + 1} loss={val_loss:.6f} '
+                    f'ppl={math.exp(val_loss):.4f} '
+                    f'time={datetime.datetime.now()}\n'
+                )
+                log_file.flush()
+
+                # FIX 7: Save best model based on validation loss (was commented out)
+                if val_loss < self.min_val_loss:
+                    self.min_val_loss = val_loss
+                    accelerator.wait_for_everyone()
+                    unwrapped_model = accelerator.unwrap_model(model)
+                    raw_model = (
+                        unwrapped_model.module
+                        if hasattr(unwrapped_model, "module")
+                        else unwrapped_model
+                    )
+                    best_path = self.config.epoch_save_path + f'epoch{epoch + 1}_best.pth'
+                    torch.save(raw_model.state_dict(), best_path)
+                    if accelerator.is_local_main_process:
+                        print(f"  --> New best val_loss={val_loss:.6f}, saved to {best_path}")
+
+            # --- Periodic / final checkpoint ---
+            if (
+                self.config.epoch_save_frequency > 0
+                and epoch % self.config.epoch_save_frequency == 0
+            ) or (epoch == config.max_epochs - 1):
                 accelerator.wait_for_everyone()
                 unwrapped_model = accelerator.unwrap_model(model)
-                raw_model = unwrapped_model.module if hasattr(
-                    unwrapped_model, "module") else unwrapped_model
-                torch.save(raw_model.state_dict(),
-                           self.config.epoch_save_path + str(epoch + 1) + '.pth')
-
-#             if epoch >=100 and save_flag:
-#                 accelerator.wait_for_everyone()
-#                 unwrapped_model = accelerator.unwrap_model(model)
-#                 raw_model = unwrapped_model.module if hasattr(
-#                     unwrapped_model, "module") else unwrapped_model
-#                 torch.save(raw_model.state_dict(),
-#                            self.config.epoch_save_path + + str(epoch+1) + 'best_dev' + '.pth')
+                raw_model = (
+                    unwrapped_model.module
+                    if hasattr(unwrapped_model, "module")
+                    else unwrapped_model
+                )
+                ckpt_path = self.config.epoch_save_path + f'{epoch + 1}.pth'
+                torch.save(raw_model.state_dict(), ckpt_path)
