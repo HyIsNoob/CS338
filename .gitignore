@@ -10,6 +10,8 @@ checkpoints/
 
 .env
 
+.temp/
+
 *.pth
 enwik8_split/
 data/wikipedia_vi.jsonl
