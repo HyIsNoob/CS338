@@ -50,7 +50,7 @@ model_type = 'RWKV'
 # ===> batch_size must be divisible by B_GROUP_FORWARD and B_GROUP_BACKWARD in model.py
 # For example, if your batch_size = 20, you can set B_GROUP_FORWARD = 4, B_GROUP_BACKWARD = 2
 # If you see "CUDA out of memory", reduce it. Use GPU-Z to find the highest value for your VRAM.
-batch_size = 4
+batch_size = int(os.environ.get("SPIKEGPT_BATCH", "2"))
 
 ### Step 4: set learning rate, training mini-epochs #######################################################
 
