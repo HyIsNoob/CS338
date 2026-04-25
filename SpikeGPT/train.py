@@ -24,8 +24,14 @@ torch.backends.cuda.matmul.allow_tf32 = True
 
 ### Step 1: set training data ##########################################################################
 
-datafile_train = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_train_data_text_document"
-datafile_valid = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_val_data_text_document"
+datafile_train = os.environ.get(
+    "SPIKEGPT_DATA_TRAIN",
+    "/kaggle/input/datasets/jakhanh1/tool-data-old/train_tool_data_text_document",
+)
+datafile_valid = os.environ.get(
+    "SPIKEGPT_DATA_VALID",
+    "/kaggle/input/datasets/jakhanh1/tool-data-old/valid_tool_data_text_document",
+)
 datafile_test = "test.txt"
 datafile_encoding = 'utf-8'
 # datafile_encoding = 'utf-16le'
@@ -54,7 +60,7 @@ lr_final = 1e-6
 n_epoch = 200
 # 0 = never, 1 = every mini-epoch, 2 = every two mini-epochs, etc.
 epoch_save_frequency = 10
-epoch_save_path = 'updated_2_model_weights'
+epoch_save_path = 'exp2_headqk_weights'
 
 epoch_length_fixed = 1000
 
@@ -103,7 +109,7 @@ if __name__ == '__main__':
     )
     if os.path.isfile(pretrained):
         m2 = torch.load(pretrained, map_location=torch.device("cpu"))
-        model.load_state_dict(m2)
+        model.load_state_dict(m2, strict=False)
 
     test_dataset = None
     print('model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
