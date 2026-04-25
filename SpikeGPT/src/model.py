@@ -20,7 +20,7 @@ except:
 
 logger = logging.getLogger(__name__)
 
-RWKV_HEAD_QK_DIM = 32
+RWKV_HEAD_QK_DIM = 64
 print(f'\nRWKV_HEAD_QK_DIM {RWKV_HEAD_QK_DIM}\n')
 
 
@@ -429,10 +429,10 @@ class GPT(nn.Module):
             k = self.head_k(x)[:, :T, :]
             c = (q @ k.transpose(-2, -1)) * (1.0 / RWKV_HEAD_QK_DIM)
             c = c.masked_fill(self.copy_mask[:T, :T] == 0, 0)
-            oh = F.one_hot(idx, num_classes=self.config.vocab_size).to(
-                device=q.device, dtype=q.dtype
-            )
-            c_logits = c @ oh
+            vlen = int(self.config.vocab_size)
+            c_logits = q.new_zeros((B, T, vlen))
+            index_3d = idx.long().unsqueeze(1).expand(-1, T, -1).clamp(0, vlen - 1)
+            c_logits.scatter_add_(2, index_3d, c)
             x = self.head(x) + c_logits
         else:
             x = self.head(x)
