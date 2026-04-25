@@ -24,8 +24,8 @@ torch.backends.cuda.matmul.allow_tf32 = True
 
 ### Step 1: set training data ##########################################################################
 
-datafile_train = "../json2binidx_tool/data/train_tool_data_text_document"
-datafile_valid = "../json2binidx_tool/data/valid_tool_data_text_document"
+datafile_train = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_train_data_text_document"
+datafile_valid = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_val_data_text_document"
 datafile_test = "test.txt"
 datafile_encoding = 'utf-8'
 # datafile_encoding = 'utf-16le'
