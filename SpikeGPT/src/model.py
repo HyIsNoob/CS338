@@ -21,7 +21,13 @@ except:
 logger = logging.getLogger(__name__)
 
 RWKV_HEAD_QK_DIM = 64
+LOCAL_ATTN_WINDOW = int(os.environ.get("SPIKEGPT_LOCAL_ATTN_WINDOW", "64"))
+LOCAL_ATTN_HEADS = int(os.environ.get("SPIKEGPT_LOCAL_ATTN_HEADS", "8"))
+LOCAL_ATTN_ENABLED = os.environ.get("SPIKEGPT_LOCAL_ATTN", "1").strip() not in ("0", "false", "False")
 print(f'\nRWKV_HEAD_QK_DIM {RWKV_HEAD_QK_DIM}\n')
+print(
+    f"LOCAL_ATTN enabled={LOCAL_ATTN_ENABLED} window={LOCAL_ATTN_WINDOW} heads={LOCAL_ATTN_HEADS}\n"
+)
 
 
 class L2Wrap(torch.autograd.Function):
@@ -358,6 +364,26 @@ class GPT(nn.Module):
         self.ln_out = nn.LayerNorm(config.n_embd)
         self.head = nn.Linear(config.n_embd, config.vocab_size, bias=False)
 
+        self.local_attn = None
+        self.local_attn_ln = None
+        self.local_attn_scale = None
+        if LOCAL_ATTN_ENABLED and config.n_embd % LOCAL_ATTN_HEADS == 0:
+            self.local_attn_ln = nn.LayerNorm(config.n_embd)
+            self.local_attn = nn.MultiheadAttention(
+                config.n_embd,
+                LOCAL_ATTN_HEADS,
+                dropout=0.0,
+                batch_first=True,
+            )
+            self.local_attn_scale = nn.Parameter(torch.tensor(0.1))
+            Tm = int(config.ctx_len)
+            i = torch.arange(Tm).unsqueeze(1)
+            j = torch.arange(Tm).unsqueeze(0)
+            ok = (j <= i) & (j >= i - (LOCAL_ATTN_WINDOW - 1))
+            bias = torch.zeros(Tm, Tm)
+            bias = bias.masked_fill(~ok, float("-inf"))
+            self.register_buffer("local_attn_mask", bias)
+
         if RWKV_HEAD_QK_DIM > 0:
             self.head_q = nn.Linear(config.n_embd, RWKV_HEAD_QK_DIM, bias=False)
             self.head_q.scale_init = 0
@@ -423,6 +449,12 @@ class GPT(nn.Module):
         x = self.atan(self.emb(idx))
         x = self.blocks(x)
         x = self.ln_out(x)
+
+        if self.local_attn is not None:
+            mx = self.local_attn_mask[:T, :T].to(device=x.device, dtype=x.dtype)
+            xr = self.local_attn_ln(x)
+            ha, _ = self.local_attn(xr, xr, xr, attn_mask=mx, need_weights=False)
+            x = x + self.local_attn_scale * ha
 
         if RWKV_HEAD_QK_DIM > 0:
             q = self.head_q(x)[:, :T, :]
