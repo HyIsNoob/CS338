@@ -43,6 +43,8 @@ class TrainerConfig:
     epoch_save_frequency = 0
     epoch_save_path = 'trained-'
     num_workers = 0  # for DataLoader
+    freeze_trunk_until_epoch = 0
+    head_qk_lr_mult = 1.0
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -69,6 +71,43 @@ class Trainer:
         self.device = 'cpu'
         if torch.cuda.is_available():
             self.device = torch.cuda.current_device()
+
+    def _raw_model(self):
+        return self.model.module if hasattr(self.model, "module") else self.model
+
+    def _apply_freeze_trunk(self, epoch_idx):
+        raw = self._raw_model()
+        cfg = self.config
+        freeze_until = int(getattr(cfg, "freeze_trunk_until_epoch", 0) or 0)
+        if freeze_until <= 0:
+            for p in raw.parameters():
+                p.requires_grad = True
+            return
+        unfrozen = epoch_idx >= freeze_until
+        for n, p in raw.named_parameters():
+            if n.startswith("emb.") or n.startswith("blocks.") or n.startswith("ln_out."):
+                p.requires_grad = unfrozen
+            else:
+                p.requires_grad = True
+
+    def _sync_param_group_lr(self, optimizer, epoch_idx):
+        cfg = self.config
+        base = self.lr
+        freeze_until = int(getattr(cfg, "freeze_trunk_until_epoch", 0) or 0)
+        h_mult = float(getattr(cfg, "head_qk_lr_mult", 1.0))
+        if len(optimizer.param_groups) < 2:
+            for g in optimizer.param_groups:
+                g["lr"] = base
+            return
+        trunk_on = 1.0 if (freeze_until <= 0 or epoch_idx >= freeze_until) else 0.0
+        for g in optimizer.param_groups:
+            name = g.get("name", "")
+            if name == "trunk":
+                g["lr"] = base * trunk_on
+            elif name == "head_branch":
+                g["lr"] = base * h_mult
+            else:
+                g["lr"] = base
 
     def get_run_name(self):
         raw_model = self.model.module if hasattr(self.model, "module") else self.model
@@ -154,10 +193,10 @@ class Trainer:
                                 0.5 - lr_final_factor / 2
                             ) * math.cos(math.pi * progress)
                         self.lr = config.learning_rate * lr_mult
-                        for param_group in optimizer.param_groups:
-                            param_group['lr'] = self.lr
+                        self._sync_param_group_lr(optimizer, getattr(self, "_train_epoch_idx", 0))
                     else:
                         progress = 0
+                        self._sync_param_group_lr(optimizer, getattr(self, "_train_epoch_idx", 0))
 
                     now_loss = loss.item()
                     self.steps += 1
@@ -187,6 +226,9 @@ class Trainer:
 
         self.tokens = 0
         for epoch in range(config.max_epochs):
+            self._train_epoch_idx = epoch
+            self._apply_freeze_trunk(epoch)
+            self._sync_param_group_lr(optimizer, epoch)
 
             # --- Training ---
             self.avg_loss = -1  # FIX 5: Reset per-epoch smoothed loss each epoch

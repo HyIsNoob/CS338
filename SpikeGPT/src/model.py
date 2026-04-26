@@ -363,6 +363,7 @@ class GPT(nn.Module):
             self.head_q.scale_init = 0
             self.head_k = nn.Linear(config.n_embd, RWKV_HEAD_QK_DIM, bias=False)
             self.head_k.scale_init = 0.1
+            self.head_qk_gate_logit = nn.Parameter(torch.tensor([-5.0]))
             self.register_buffer("copy_mask", torch.tril(
                 torch.ones(config.ctx_len, config.ctx_len)))
 
@@ -397,16 +398,40 @@ class GPT(nn.Module):
                 no_decay.add(fpn)
 
         param_dict = {pn: p for pn, p in self.named_parameters()}
-        optim_groups = [
-            {"params": [param_dict[pn]
-                        for pn in sorted(list(no_decay))], "weight_decay": 0.0},
-        ]
+        if RWKV_HEAD_QK_DIM <= 0:
+            optim_groups = [
+                {"params": [param_dict[pn]
+                            for pn in sorted(list(no_decay))], "weight_decay": 0.0},
+            ]
+        else:
+            trunk_names = sorted(
+                pn for pn in no_decay
+                if not (
+                    pn == "head.weight"
+                    or pn.startswith("head_q.")
+                    or pn.startswith("head_k.")
+                    or pn == "head_qk_gate_logit"
+                )
+            )
+            head_names = sorted(
+                pn for pn in no_decay
+                if (
+                    pn == "head.weight"
+                    or pn.startswith("head_q.")
+                    or pn.startswith("head_k.")
+                    or pn == "head_qk_gate_logit"
+                )
+            )
+            optim_groups = [
+                {"params": [param_dict[pn] for pn in trunk_names], "weight_decay": 0.0, "name": "trunk"},
+                {"params": [param_dict[pn] for pn in head_names], "weight_decay": 0.0, "name": "head_branch"},
+            ]
 
         try:
             optimizer = FusedAdam(optim_groups, lr=train_config.learning_rate, betas=train_config.betas,
                                   eps=train_config.eps, bias_correction=True, adam_w_mode=False, weight_decay=0,
                                   amsgrad=False)
-        except:
+        except Exception:
             print('\n\nDeepSpeed not found. Using torch optimizer instead (probably slower)\n\n')
             optimizer = torch.optim.Adam(optim_groups, lr=train_config.learning_rate, betas=train_config.betas,
                                          eps=train_config.eps)
@@ -433,7 +458,8 @@ class GPT(nn.Module):
             c_logits = q.new_zeros((B, T, vlen))
             index_3d = idx.long().unsqueeze(1).expand(-1, T, -1).clamp(0, vlen - 1)
             c_logits.scatter_add_(2, index_3d, c)
-            x = self.head(x) + c_logits
+            g = torch.sigmoid(self.head_qk_gate_logit)
+            x = self.head(x) + g * c_logits
         else:
             x = self.head(x)
 

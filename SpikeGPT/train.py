@@ -60,7 +60,10 @@ lr_final = 1e-6
 n_epoch = 200
 # 0 = never, 1 = every mini-epoch, 2 = every two mini-epochs, etc.
 epoch_save_frequency = 10
-epoch_save_path = 'exp2_headqk_weights'
+epoch_save_path = 'all_abc_weights'
+
+freeze_trunk_until_epoch = int(os.environ.get("SPIKEGPT_FREEZE_EPOCHS", "20"))
+head_qk_lr_mult = float(os.environ.get("SPIKEGPT_HEAD_LR_MULT", "0.25"))
 
 epoch_length_fixed = 1000
 
@@ -112,11 +115,30 @@ if __name__ == '__main__':
         model.load_state_dict(m2, strict=False)
 
     test_dataset = None
-    print('model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
-          betas, 'eps', eps, 'ctx', ctx_len, 'layer', n_layer, 'embd', n_embd, )
-    tconf = TrainerConfig(model_type=model_type, max_epochs=n_epoch, batch_size=batch_size,
-                          learning_rate=lr_init, lr_decay=True, lr_final=lr_final, betas=betas, eps=eps, grad_norm_clip=grad_norm_clip,
-                          warmup_tokens=warmup_tokens, final_tokens=n_epoch*len(train_dataset)*ctx_len, num_workers=num_workers, epoch_save_frequency=epoch_save_frequency, epoch_save_path=epoch_save_path)
+    print(
+        'model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
+        betas, 'eps', eps, 'ctx', ctx_len, 'layer', n_layer, 'embd', n_embd,
+        'freeze_trunk_until_epoch', freeze_trunk_until_epoch,
+        'head_qk_lr_mult', head_qk_lr_mult,
+    )
+    tconf = TrainerConfig(
+        model_type=model_type,
+        max_epochs=n_epoch,
+        batch_size=batch_size,
+        learning_rate=lr_init,
+        lr_decay=True,
+        lr_final=lr_final,
+        betas=betas,
+        eps=eps,
+        grad_norm_clip=grad_norm_clip,
+        warmup_tokens=warmup_tokens,
+        final_tokens=n_epoch * len(train_dataset) * ctx_len,
+        num_workers=num_workers,
+        epoch_save_frequency=epoch_save_frequency,
+        epoch_save_path=epoch_save_path,
+        freeze_trunk_until_epoch=freeze_trunk_until_epoch,
+        head_qk_lr_mult=head_qk_lr_mult,
+    )
     trainer = Trainer(model, train_dataset, valid_dataset, test_dataset, tconf)
 
     def cleanup_checkpoints(save_dir, keep=5):
