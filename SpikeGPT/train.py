@@ -26,11 +26,11 @@ torch.backends.cuda.matmul.allow_tf32 = True
 
 datafile_train = os.environ.get(
     "SPIKEGPT_DATA_TRAIN",
-    "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_train_data_text_document",
+    "/kaggle/input/datasets/jakhanh1/tool-data-old/train_tool_data_text_document",
 )
 datafile_valid = os.environ.get(
     "SPIKEGPT_DATA_VALID",
-    "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_val_data_text_document",
+    "/kaggle/input/datasets/jakhanh1/tool-data-old/valid_tool_data_text_document",
 )
 datafile_test = "test.txt"
 datafile_encoding = 'utf-8'
