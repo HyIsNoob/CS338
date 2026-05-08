@@ -430,9 +430,9 @@ class GPT(nn.Module):
             c = (q @ k.transpose(-2, -1)) * (1.0 / RWKV_HEAD_QK_DIM)
             c = c.masked_fill(self.copy_mask[:T, :T] == 0, 0)
             
-            c = c @ F.one_hot(idx, num_classes=self.config.vocab_size).to(c.dtype)
-
-            x = self.head(x) + c
+            x = self.head(x)
+            indices = idx.unsqueeze(1).expand(B, T, T)
+            x.scatter_add_(2, indices, c.to(x.dtype))
         else:
             x = self.head(x)
 
