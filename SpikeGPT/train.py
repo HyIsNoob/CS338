@@ -24,8 +24,8 @@ torch.backends.cuda.matmul.allow_tf32 = True
 
 ### Step 1: set training data ##########################################################################
 
-datafile_train = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_train_data_text_document"
-datafile_valid = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_val_data_text_document"
+datafile_train = "/kaggle/input/datasets/jakhanh1/tool-data-old/train_tool_data_text_document"
+datafile_valid = "/kaggle/input/datasets/jakhanh1/tool-data-old/valid_tool_data_text_document"
 datafile_test = "test.txt"
 datafile_encoding = 'utf-8'
 # datafile_encoding = 'utf-16le'
@@ -54,7 +54,7 @@ lr_final = 1e-6
 n_epoch = 200
 # 0 = never, 1 = every mini-epoch, 2 = every two mini-epochs, etc.
 epoch_save_frequency = 10
-epoch_save_path = 'updated_2_model_weights'
+epoch_save_path = 'updated_2_model_weights/'
 
 epoch_length_fixed = 1000
 
@@ -112,6 +112,7 @@ if __name__ == '__main__':
                           learning_rate=lr_init, lr_decay=True, lr_final=lr_final, betas=betas, eps=eps, grad_norm_clip=grad_norm_clip,
                           warmup_tokens=warmup_tokens, final_tokens=n_epoch*len(train_dataset)*ctx_len, num_workers=num_workers, epoch_save_frequency=epoch_save_frequency, epoch_save_path=epoch_save_path)
     trainer = Trainer(model, train_dataset, valid_dataset, test_dataset, tconf)
+    os.makedirs(epoch_save_path, exist_ok=True)
 
     def cleanup_checkpoints(save_dir, keep=5):
         while True:
