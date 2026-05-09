@@ -102,8 +102,19 @@ if __name__ == '__main__':
         "/kaggle/input/models/hykhangg/spikegpt216m/pytorch/default/1/SpikeGPT-216M.pth",
     )
     if os.path.isfile(pretrained):
+        print("\n" + "="*50)
+        print(f"✅ ĐÃ TÌM THẤY FILE PRE-TRAINED TẠI: {pretrained}")
         m2 = torch.load(pretrained, map_location=torch.device("cpu"))
-        model.load_state_dict(m2, strict=False)
+        load_result = model.load_state_dict(m2, strict=False)
+        print(f"✅ NẠP THÀNH CÔNG! Các layer chưa có tạ (sẽ khởi tạo random):")
+        print(load_result.missing_keys) # Sẽ in ra head_q và head_k
+        print("="*50 + "\n")
+    else:
+        print("\n" + "!"*50)
+        print(f"❌ CẢNH BÁO: KHÔNG TÌM THẤY FILE {pretrained} !!!")
+        print("❌ QUÁ TRÌNH TRAIN SẼ BẮT ĐẦU VỚI RANDOM WEIGHTS (FROM SCRATCH)!!!")
+        print("!"*50 + "\n")
+
 
     test_dataset = None
     print('model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
