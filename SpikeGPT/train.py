@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
     pretrained = os.environ.get(
         "SPIKEGPT_CHECKPOINT",
-        "/kaggle/input/models/jakhanh1/spikegpt-256headqk/pytorch/default/1/256(best).pth",
+        "/kaggle/input/models/jakhanh1/spikegpt-256headqk/pytorch/default/2/Scratch165(best).pth",
     )
     if os.path.isfile(pretrained):
         print("\n" + "="*50)
