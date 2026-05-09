@@ -103,7 +103,7 @@ if __name__ == '__main__':
     )
     if os.path.isfile(pretrained):
         m2 = torch.load(pretrained, map_location=torch.device("cpu"))
-        model.load_state_dict(m2)
+        model.load_state_dict(m2, strict=False)
 
     test_dataset = None
     print('model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
