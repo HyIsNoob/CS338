@@ -20,7 +20,7 @@ except:
 
 logger = logging.getLogger(__name__)
 
-RWKV_HEAD_QK_DIM = 256
+RWKV_HEAD_QK_DIM = 0
 print(f'\nRWKV_HEAD_QK_DIM {RWKV_HEAD_QK_DIM}\n')
 
 
