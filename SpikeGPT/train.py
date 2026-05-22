@@ -24,8 +24,8 @@ torch.backends.cuda.matmul.allow_tf32 = True
 
 ### Step 1: set training data ##########################################################################
 
-datafile_train = "/kaggle/input/datasets/jakhanh1/tool-data-old/train_tool_data_text_document"
-datafile_valid = "/kaggle/input/datasets/jakhanh1/tool-data-old/valid_tool_data_text_document"
+datafile_train = "/kaggle/input/datasets/nviethoang/50kfixdataagencyspikegpt/train_tool_data_copyfix_text_document"
+datafile_valid = "/kaggle/input/datasets/nviethoang/50kfixdataagencyspikegpt/valid_tool_data_copyfix_text_document"
 datafile_test = "test.txt"
 datafile_encoding = 'utf-8'
 # datafile_encoding = 'utf-16le'
@@ -99,7 +99,7 @@ if __name__ == '__main__':
 
     pretrained = os.environ.get(
         "SPIKEGPT_CHECKPOINT",
-        "/kaggle/input/models/jakhanh1/spikegpt-256headqk/pytorch/default/2/Scratch165(best).pth",
+        "/kaggle/input/models/hykhangg/spikegpt216m/pytorch/default/1/SpikeGPT-216M.pth",
     )
     if os.path.isfile(pretrained):
         print("\n" + "="*50)
@@ -114,6 +114,7 @@ if __name__ == '__main__':
         print(f"CẢNH BÁO: KHÔNG TÌM THẤY FILE {pretrained} !!!")
         print("QUÁ TRÌNH TRAIN SẼ BẮT ĐẦU VỚI RANDOM WEIGHTS (FROM SCRATCH)!!!")
         print("!"*50 + "\n")
+
 
     test_dataset = None
     print('model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
