@@ -20,14 +20,8 @@ except:
 
 logger = logging.getLogger(__name__)
 
-RWKV_HEAD_QK_DIM = 256
+RWKV_HEAD_QK_DIM = 0
 print(f'\nRWKV_HEAD_QK_DIM {RWKV_HEAD_QK_DIM}\n')
-
-# Task-specific objective for tool calling. Values > 1 increase the loss on
-# next-token targets that can be copied from the previous context.
-COPY_LOSS_WEIGHT = float(os.environ.get("COPY_LOSS_WEIGHT", "2.0"))
-COPY_LOSS_WINDOW = int(os.environ.get("COPY_LOSS_WINDOW", "512"))
-print(f'\nCOPY_LOSS_WEIGHT {COPY_LOSS_WEIGHT} COPY_LOSS_WINDOW {COPY_LOSS_WINDOW}\n')
 
 
 class L2Wrap(torch.autograd.Function):
@@ -45,35 +39,6 @@ class L2Wrap(torch.autograd.Function):
         gy = torch.zeros_like(y)
         gy.scatter_(-1, ids, maxx * factor)
         return (grad_output, gy)
-
-
-def copy_aware_cross_entropy(logits, idx, targets):
-    base_loss = F.cross_entropy(
-        logits.view(-1, logits.size(-1)),
-        targets.to(logits.device).view(-1),
-        reduction='none',
-    ).view_as(targets)
-
-    if COPY_LOSS_WEIGHT <= 1.0:
-        return base_loss.mean()
-
-    idx = idx.to(logits.device)
-    targets = targets.to(logits.device)
-    B, T = targets.size()
-
-    # A target token is copy-relevant if it has appeared in the available
-    # causal prefix. Restricting to a recent window reduces noise from old docs.
-    pos = torch.arange(T, device=logits.device)
-    causal = pos.view(T, 1) >= pos.view(1, T)
-    if COPY_LOSS_WINDOW > 0:
-        causal = causal & ((pos.view(T, 1) - pos.view(1, T)) <= COPY_LOSS_WINDOW)
-
-    seen = targets.unsqueeze(-1).eq(idx.unsqueeze(1)) & causal.unsqueeze(0)
-    copy_target = seen.any(dim=-1)
-
-    weights = torch.ones_like(base_loss)
-    weights = weights + copy_target.to(base_loss.dtype) * (COPY_LOSS_WEIGHT - 1.0)
-    return (base_loss * weights).sum() / weights.sum()
 
 
 ########################################################################################################
@@ -464,15 +429,20 @@ class GPT(nn.Module):
             k = self.head_k(x)[:, :T, :]
             c = (q @ k.transpose(-2, -1)) * (1.0 / RWKV_HEAD_QK_DIM)
             c = c.masked_fill(self.copy_mask[:T, :T] == 0, 0)
-            
-            x = self.head(x)
-            indices = idx.unsqueeze(1).expand(B, T, T)
-            x.scatter_add_(2, indices, c.to(x.dtype))
+
+            #             if '32' in os.environ['RWKV_FLOAT_MODE']:
+            #                 c = c @ F.one_hot(idx, num_classes=self.config.vocab_size)
+            #             elif os.environ['RWKV_FLOAT_MODE'] == 'fp16':
+            #                 c = c @ F.one_hot(idx, num_classes=self.config.vocab_size).half()
+            #             elif os.environ['RWKV_FLOAT_MODE'] == 'bf16':
+            #                 c = c @ F.one_hot(idx, num_classes=self.config.vocab_size).bfloat16()
+
+            x = self.head(x) + c
         else:
             x = self.head(x)
 
+        loss = None
         if targets is not None:
-            loss = copy_aware_cross_entropy(x, idx, targets)
-            return L2Wrap.apply(loss, x)
-        
-        return x
+            loss = F.cross_entropy(x.view(-1, x.size(-1)), targets.to(x.device).view(-1))
+
+        return L2Wrap.apply(loss, x)
