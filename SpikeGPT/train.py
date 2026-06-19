@@ -2,11 +2,7 @@
 # The RWKV v2-RNN Language Model - https://github.com/BlinkDL/RWKV-LM
 ########################################################################################################
 
-import glob
 import logging
-import os
-import threading
-import time
 import datetime
 import json
 from src.model import GPT, GPTConfig
@@ -24,8 +20,8 @@ torch.backends.cuda.matmul.allow_tf32 = True
 
 ### Step 1: set training data ##########################################################################
 
-datafile_train = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_train_data_text_document"
-datafile_valid = "/kaggle/input/datasets/nviethoang/new-train-thoughts/new_val_data_text_document"
+datafile_train = "../json2binidx_tool/data/train_tool_data_text_document"
+datafile_valid = "../json2binidx_tool/data/valid_tool_data_text_document"
 datafile_test = "test.txt"
 datafile_encoding = 'utf-8'
 # datafile_encoding = 'utf-16le'
@@ -48,13 +44,13 @@ batch_size = 4
 
 ### Step 4: set learning rate, training mini-epochs #######################################################
 
-lr_init = 1e-5
-lr_final = 1e-6
+lr_init = 1e-4
+lr_final = 1e-5
 # the mini-epoch is very short and of fixed length (ctx_len * epoch_length_fixed tokens)
-n_epoch = 200
+n_epoch = 500
 # 0 = never, 1 = every mini-epoch, 2 = every two mini-epochs, etc.
-epoch_save_frequency = 10
-epoch_save_path = 'updated_2_model_weights'
+epoch_save_frequency = 5
+epoch_save_path = 'model_weights'
 
 epoch_length_fixed = 1000
 
@@ -84,7 +80,7 @@ print('loading data... ' + datafile_train)
 #     datafile_train, "r", encoding=datafile_encoding).read(), ctx_len, epoch_length_fixed)
 
 train_dataset = Dataset(MMapIndexedDataset(datafile_train), ctx_len, epoch_length_fixed) #use it when you use binidx files
-valid_dataset = Dataset(MMapIndexedDataset(datafile_valid), ctx_len, epoch_length_fixed)
+valid_dataset =  Dataset(MMapIndexedDataset(datafile_valid), ctx_len, epoch_length_fixed)
 # valid_dataset = Dataset(open(
 #     datafile_valid, "r", encoding=datafile_encoding).read(), ctx_len, epoch_length_fixed) 
 
@@ -96,15 +92,12 @@ valid_dataset = Dataset(MMapIndexedDataset(datafile_valid), ctx_len, epoch_lengt
 if __name__ == '__main__':
     model = GPT(GPTConfig(train_dataset.vocab_size, train_dataset.ctx_len, model_type=model_type,
                           n_layer=n_layer, n_embd=n_embd)).cuda()
-
-    pretrained = os.environ.get(
-        "SPIKEGPT_CHECKPOINT",
-        "/kaggle/input/models/hykhangg/spikegpt216m/pytorch/default/1/SpikeGPT-216M.pth",
-    )
-    if os.path.isfile(pretrained):
-        m2 = torch.load(pretrained, map_location=torch.device("cpu"))
-        model.load_state_dict(m2)
-
+    
+    # # load a trained model. remember to change random seed
+#     m2 = torch.load('../SpikeGPT/updated_2_model_weights151.pth',map_location=torch.device('cpu'))
+#     model.load_state_dict(m2)
+    # valid_dataset = None
+    
     test_dataset = None
     print('model', model_type, 'epoch', n_epoch, 'batchsz', batch_size, 'betas',
           betas, 'eps', eps, 'ctx', ctx_len, 'layer', n_layer, 'embd', n_embd, )
@@ -113,21 +106,6 @@ if __name__ == '__main__':
                           warmup_tokens=warmup_tokens, final_tokens=n_epoch*len(train_dataset)*ctx_len, num_workers=num_workers, epoch_save_frequency=epoch_save_frequency, epoch_save_path=epoch_save_path)
     trainer = Trainer(model, train_dataset, valid_dataset, test_dataset, tconf)
 
-    def cleanup_checkpoints(save_dir, keep=5):
-        while True:
-            time.sleep(60)
-            if not os.path.exists(save_dir):
-                continue
-            files = glob.glob(os.path.join(save_dir, "*.pth"))
-            if len(files) > keep:
-                files.sort(key=os.path.getmtime)
-                for ckpt in files[:-keep]:
-                    try:
-                        os.remove(ckpt)
-                    except OSError:
-                        pass
-
-    threading.Thread(target=cleanup_checkpoints, args=(epoch_save_path, 5), daemon=True).start()
     trainer.train()
 
     torch.save(model.state_dict(), 'trained-' + str(n_epoch) + '-' + trainer.get_run_name() +
